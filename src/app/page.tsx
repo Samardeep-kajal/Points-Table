@@ -166,6 +166,7 @@ export default function Home() {
       }))
     : [];
 
+  // Show loading spinner if data is loading
   if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 flex items-center justify-center">
@@ -408,13 +409,10 @@ export default function Home() {
                     dataKey="label"
                     stroke={theme === "dark" ? "#9CA3AF" : "#6B7280"}
                   />
-                  <YAxis
-                    stroke={theme === "dark" ? "#9CA3AF" : "#6B7280"}
-                  />
+                  <YAxis stroke={theme === "dark" ? "#9CA3AF" : "#6B7280"} />
                   <Tooltip
                     contentStyle={{
-                      backgroundColor:
-                        theme === "dark" ? "#1F2937" : "#FFFFFF",
+                      backgroundColor: theme === "dark" ? "#1F2937" : "#FFFFFF",
                       border:
                         theme === "dark"
                           ? "1px solid #374151"
@@ -479,8 +477,7 @@ export default function Home() {
                   </Pie>
                   <Tooltip
                     contentStyle={{
-                      backgroundColor:
-                        theme === "dark" ? "#1F2937" : "#FFFFFF",
+                      backgroundColor: theme === "dark" ? "#1F2937" : "#FFFFFF",
                       border:
                         theme === "dark"
                           ? "1px solid #374151"
@@ -620,13 +617,10 @@ export default function Home() {
                             }
                           )}{" "}
                           -{" "}
-                          {new Date(task.scheduledEnd).toLocaleString(
-                            "en-US",
-                            {
-                              hour: "2-digit",
-                              minute: "2-digit",
-                            }
-                          )}
+                          {new Date(task.scheduledEnd).toLocaleString("en-US", {
+                            hour: "2-digit",
+                            minute: "2-digit",
+                          })}
                         </div>
                         {task.isCompleted && (
                           <>
