@@ -13,8 +13,6 @@ import {
   PieChart,
   Award,
   Filter,
-  Moon,
-  Sun,
 } from "lucide-react";
 import {
   LineChart,
@@ -29,7 +27,6 @@ import {
   Pie,
 } from "recharts";
 import AddTaskModal from "@/components/AddTaskModal";
-import { useTheme } from "@/contexts/ThemeContext";
 
 interface Task {
   _id: string;
@@ -80,7 +77,6 @@ const CATEGORY_NAMES = {
 };
 
 export default function Home() {
-  const { theme, toggleTheme } = useTheme();
   const [tasks, setTasks] = useState<Task[]>([]);
   const [stats, setStats] = useState<StatsData | null>(null);
   const [period, setPeriod] = useState<"week" | "month">("week");
@@ -169,54 +165,41 @@ export default function Home() {
   // Show loading spinner if data is loading
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 dark:border-blue-400 mx-auto mb-4"></div>
-          <p className="text-gray-600 dark:text-gray-300">
-            Loading your progress...
-          </p>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading your progress...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 transition-colors duration-300">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 transition-colors duration-300">
       <div className="container mx-auto px-4 py-6 max-w-7xl">
         {/* Header */}
         <div className="mb-8">
           <div className="flex justify-between items-start">
             <div>
-              <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-2">
-                📊 Task Alignment Tracker
+              <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">
+                Task Alignment Tracker
               </h1>
-              <p className="text-gray-600 dark:text-gray-300">
+              <p className="text-gray-600">
                 Track how well you align with your Google Calendar schedule
               </p>
             </div>
-            <button
-              onClick={toggleTheme}
-              className="p-3 rounded-lg bg-white dark:bg-gray-800 shadow-sm hover:shadow-md transition-all duration-200 border dark:border-gray-700"
-              title={`Switch to ${theme === "light" ? "dark" : "light"} mode`}
-            >
-              {theme === "light" ? (
-                <Moon size={20} className="text-gray-600" />
-              ) : (
-                <Sun size={20} className="text-yellow-500" />
-              )}
-            </button>
           </div>
         </div>
 
         {/* Period Toggle */}
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
-          <div className="flex bg-white dark:bg-gray-800 rounded-lg p-1 shadow-sm border dark:border-gray-700">
+          <div className="flex bg-white rounded-lg p-1 shadow-sm border">
             <button
               onClick={() => setPeriod("week")}
               className={`px-4 py-2 rounded-md transition-colors ${
                 period === "week"
                   ? "bg-blue-600 text-white"
-                  : "text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                  : "text-gray-600 hover:bg-gray-100"
               }`}
             >
               Weekly
@@ -226,7 +209,7 @@ export default function Home() {
               className={`px-4 py-2 rounded-md transition-colors ${
                 period === "month"
                   ? "bg-blue-600 text-white"
-                  : "text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                  : "text-gray-600 hover:bg-gray-100"
               }`}
             >
               Monthly
@@ -245,61 +228,39 @@ export default function Home() {
         {/* Stats Overview */}
         {stats?.current && (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-            <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border dark:border-gray-700">
+            <div className="bg-white rounded-xl p-6 shadow-sm border">
               <div className="flex items-center justify-between mb-2">
                 <div className="flex items-center gap-2">
-                  <CheckCircle
-                    className="text-green-600 dark:text-green-400"
-                    size={20}
-                  />
-                  <span className="text-gray-600 dark:text-gray-300 text-sm">
-                    Completion Rate
-                  </span>
+                  <CheckCircle className="text-green-600" size={20} />
+                  <span className="text-gray-600 text-sm">Completion Rate</span>
                 </div>
                 {stats.current.successRate >
                 (stats.previous?.successRate || 0) ? (
-                  <TrendingUp
-                    className="text-green-600 dark:text-green-400"
-                    size={16}
-                  />
+                  <TrendingUp className="text-green-600" size={16} />
                 ) : (
-                  <TrendingDown
-                    className="text-red-600 dark:text-red-400"
-                    size={16}
-                  />
+                  <TrendingDown className="text-red-600" size={16} />
                 )}
               </div>
-              <div className="text-2xl font-bold text-gray-900 dark:text-white mb-1">
+              <div className="text-2xl font-bold text-gray-900 mb-1">
                 {stats.current.successRate || 0}%
               </div>
-              <div className="text-sm text-gray-500 dark:text-gray-400">
+              <div className="text-sm text-gray-500">
                 {stats.current.completedTasks || 0} /{" "}
                 {stats.current.totalTasks || 0} tasks
               </div>
             </div>
 
-            <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border dark:border-gray-700">
+            <div className="bg-white rounded-xl p-6 shadow-sm border">
               <div className="flex items-center justify-between mb-2">
                 <div className="flex items-center gap-2">
-                  <Target
-                    className="text-blue-600 dark:text-blue-400"
-                    size={20}
-                  />
-                  <span className="text-gray-600 dark:text-gray-300 text-sm">
-                    Alignment Score
-                  </span>
+                  <Target className="text-blue-600" size={20} />
+                  <span className="text-gray-600 text-sm">Alignment Score</span>
                 </div>
                 {stats.current.averageAlignment >
                 (stats.previous?.averageAlignment || 0) ? (
-                  <TrendingUp
-                    className="text-green-600 dark:text-green-400"
-                    size={16}
-                  />
+                  <TrendingUp className="text-green-600" size={16} />
                 ) : (
-                  <TrendingDown
-                    className="text-red-600 dark:text-red-400"
-                    size={16}
-                  />
+                  <TrendingDown className="text-red-600" size={16} />
                 )}
               </div>
               <div
@@ -309,63 +270,40 @@ export default function Home() {
               >
                 {stats.current.averageAlignment || 0}/100
               </div>
-              <div className="text-sm text-gray-500 dark:text-gray-400">
-                Schedule adherence
-              </div>
+              <div className="text-sm text-gray-500">Schedule adherence</div>
             </div>
 
-            <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border dark:border-gray-700">
+            <div className="bg-white rounded-xl p-6 shadow-sm border">
               <div className="flex items-center justify-between mb-2">
                 <div className="flex items-center gap-2">
-                  <Award
-                    className="text-purple-600 dark:text-purple-400"
-                    size={20}
-                  />
-                  <span className="text-gray-600 dark:text-gray-300 text-sm">
-                    Points Earned
-                  </span>
+                  <Award className="text-purple-600" size={20} />
+                  <span className="text-gray-600 text-sm">Points Earned</span>
                 </div>
                 {stats.current.totalPoints >
                 (stats.previous?.totalPoints || 0) ? (
-                  <TrendingUp
-                    className="text-green-600 dark:text-green-400"
-                    size={16}
-                  />
+                  <TrendingUp className="text-green-600" size={16} />
                 ) : (
-                  <TrendingDown
-                    className="text-red-600 dark:text-red-400"
-                    size={16}
-                  />
+                  <TrendingDown className="text-red-600" size={16} />
                 )}
               </div>
-              <div className="text-2xl font-bold text-purple-600 dark:text-purple-400 mb-1">
+              <div className="text-2xl font-bold text-purple-600 mb-1">
                 {stats.current.totalPoints || 0}
               </div>
-              <div className="text-sm text-gray-500 dark:text-gray-400">
-                This {period}
-              </div>
+              <div className="text-sm text-gray-500">This {period}</div>
             </div>
 
-            <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border dark:border-gray-700">
+            <div className="bg-white rounded-xl p-6 shadow-sm border">
               <div className="flex items-center justify-between mb-2">
                 <div className="flex items-center gap-2">
-                  <Clock
-                    className="text-orange-600 dark:text-orange-400"
-                    size={20}
-                  />
-                  <span className="text-gray-600 dark:text-gray-300 text-sm">
-                    Time Period
-                  </span>
+                  <Clock className="text-orange-600" size={20} />
+                  <span className="text-gray-600 text-sm">Time Period</span>
                 </div>
-                <Calendar
-                  className="text-gray-400 dark:text-gray-500"
-                  size={16}
-                />
+                <Calendar className="text-gray-400" size={16} />
               </div>
-              <div className="text-2xl font-bold text-gray-900 dark:text-white mb-1">
+              <div className="text-2xl font-bold text-gray-900 mb-1">
                 {period === "week" ? "This Week" : "This Month"}
               </div>
-              <div className="text-sm text-gray-500 dark:text-gray-400">
+              <div className="text-sm text-gray-500">
                 {stats.current.startDate
                   ? new Date(stats.current.startDate).toLocaleDateString(
                       "en-US",
@@ -393,34 +331,18 @@ export default function Home() {
         {/* Charts */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
           {/* Trend Chart */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border dark:border-gray-700">
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+          <div className="bg-white rounded-xl p-6 shadow-sm border">
+            <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
               <BarChart3 size={20} />
               Progress Trend
             </h3>
             {stats?.historical && stats.historical.length > 0 ? (
               <ResponsiveContainer width="100%" height={300}>
                 <LineChart data={stats.historical}>
-                  <CartesianGrid
-                    strokeDasharray="3 3"
-                    stroke={theme === "dark" ? "#374151" : "#e5e7eb"}
-                  />
-                  <XAxis
-                    dataKey="label"
-                    stroke={theme === "dark" ? "#9CA3AF" : "#6B7280"}
-                  />
-                  <YAxis stroke={theme === "dark" ? "#9CA3AF" : "#6B7280"} />
-                  <Tooltip
-                    contentStyle={{
-                      backgroundColor: theme === "dark" ? "#1F2937" : "#FFFFFF",
-                      border:
-                        theme === "dark"
-                          ? "1px solid #374151"
-                          : "1px solid #E5E7EB",
-                      borderRadius: "8px",
-                      color: theme === "dark" ? "#F9FAFB" : "#111827",
-                    }}
-                  />
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="label" />
+                  <YAxis />
+                  <Tooltip />
                   <Line
                     type="monotone"
                     dataKey="successRate"
@@ -438,12 +360,9 @@ export default function Home() {
                 </LineChart>
               </ResponsiveContainer>
             ) : (
-              <div className="h-[300px] flex items-center justify-center text-gray-500 dark:text-gray-400">
+              <div className="h-[300px] flex items-center justify-center text-gray-500">
                 <div className="text-center">
-                  <BarChart3
-                    size={48}
-                    className="mx-auto mb-4 text-gray-300 dark:text-gray-600"
-                  />
+                  <BarChart3 size={48} className="mx-auto mb-4 text-gray-300" />
                   <p>No historical data available</p>
                   <p className="text-sm">
                     Complete some tasks to see your progress!
@@ -454,8 +373,8 @@ export default function Home() {
           </div>
 
           {/* Category Breakdown */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border dark:border-gray-700">
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+          <div className="bg-white rounded-xl p-6 shadow-sm border">
+            <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
               <PieChart size={20} />
               Points by Category
             </h3>
@@ -475,26 +394,13 @@ export default function Home() {
                       <Cell key={`cell-${index}`} fill={entry.color} />
                     ))}
                   </Pie>
-                  <Tooltip
-                    contentStyle={{
-                      backgroundColor: theme === "dark" ? "#1F2937" : "#FFFFFF",
-                      border:
-                        theme === "dark"
-                          ? "1px solid #374151"
-                          : "1px solid #E5E7EB",
-                      borderRadius: "8px",
-                      color: theme === "dark" ? "#F9FAFB" : "#111827",
-                    }}
-                  />
+                  <Tooltip />
                 </RechartsPieChart>
               </ResponsiveContainer>
             ) : (
-              <div className="h-[300px] flex items-center justify-center text-gray-500 dark:text-gray-400">
+              <div className="h-[300px] flex items-center justify-center text-gray-500">
                 <div className="text-center">
-                  <PieChart
-                    size={48}
-                    className="mx-auto mb-4 text-gray-300 dark:text-gray-600"
-                  />
+                  <PieChart size={48} className="mx-auto mb-4 text-gray-300" />
                   <p>No category data available</p>
                   <p className="text-sm">
                     Complete some tasks to see the breakdown!
@@ -506,21 +412,18 @@ export default function Home() {
         </div>
 
         {/* Task List */}
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border dark:border-gray-700">
-          <div className="p-6 border-b border-gray-200 dark:border-gray-700">
+        <div className="bg-white rounded-xl shadow-sm border">
+          <div className="p-6 border-b border-gray-200">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+              <h3 className="text-lg font-semibold text-gray-900">
                 Tasks ({filteredTasks.length})
               </h3>
               <div className="flex items-center gap-2">
-                <Filter
-                  size={16}
-                  className="text-gray-400 dark:text-gray-500"
-                />
+                <Filter size={16} className="text-gray-400" />
                 <select
                   value={selectedCategory}
                   onChange={(e) => setSelectedCategory(e.target.value)}
-                  className="border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg px-3 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="border border-gray-300 bg-white text-gray-900 rounded-lg px-3 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
                   <option value="all">All Categories</option>
                   {Object.entries(CATEGORY_NAMES).map(([key, name]) => (
@@ -533,13 +436,10 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="divide-y divide-gray-200 dark:divide-gray-700">
+          <div className="divide-y divide-gray-200">
             {filteredTasks.length === 0 ? (
-              <div className="p-8 text-center text-gray-500 dark:text-gray-400">
-                <Calendar
-                  size={48}
-                  className="mx-auto mb-4 text-gray-300 dark:text-gray-600"
-                />
+              <div className="p-8 text-center text-gray-500">
+                <Calendar size={48} className="mx-auto mb-4 text-gray-300" />
                 <p>No tasks found for this period</p>
                 <p className="text-sm">
                   Add some tasks to start tracking your alignment!
@@ -549,7 +449,7 @@ export default function Home() {
               filteredTasks.map((task) => (
                 <div
                   key={task._id}
-                  className="p-6 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors"
+                  className="p-6 hover:bg-gray-50 transition-colors"
                 >
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
@@ -561,7 +461,7 @@ export default function Home() {
                           className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-colors ${
                             task.isCompleted
                               ? "bg-green-600 border-green-600"
-                              : "border-gray-300 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-500"
+                              : "border-gray-300 hover:border-gray-400"
                           }`}
                         >
                           {task.isCompleted && (
@@ -571,8 +471,8 @@ export default function Home() {
                         <h4
                           className={`font-medium ${
                             task.isCompleted
-                              ? "line-through text-gray-500 dark:text-gray-400"
-                              : "text-gray-900 dark:text-white"
+                              ? "line-through text-gray-500"
+                              : "text-gray-900"
                           }`}
                         >
                           {task.title}
@@ -583,7 +483,7 @@ export default function Home() {
                             backgroundColor:
                               CATEGORY_COLORS[
                                 task.category as keyof typeof CATEGORY_COLORS
-                              ] + (theme === "dark" ? "40" : "20"),
+                              ] + "20",
                             color:
                               CATEGORY_COLORS[
                                 task.category as keyof typeof CATEGORY_COLORS
@@ -599,12 +499,12 @@ export default function Home() {
                       </div>
 
                       {task.description && (
-                        <p className="text-sm text-gray-600 dark:text-gray-300 mb-2">
+                        <p className="text-sm text-gray-600 mb-2">
                           {task.description}
                         </p>
                       )}
 
-                      <div className="flex items-center gap-4 text-sm text-gray-500 dark:text-gray-400">
+                      <div className="flex items-center gap-4 text-sm text-gray-500">
                         <div className="flex items-center gap-1">
                           <Clock size={14} />
                           {new Date(task.scheduledStart).toLocaleString(
@@ -636,7 +536,7 @@ export default function Home() {
                             </div>
                             <div className="flex items-center gap-1">
                               <Award size={14} />
-                              <span className="text-purple-600 dark:text-purple-400">
+                              <span className="text-purple-600">
                                 {task.points} pts
                               </span>
                             </div>
