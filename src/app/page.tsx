@@ -27,6 +27,7 @@ import {
   Pie,
 } from "recharts";
 import AddTaskModal from "@/components/AddTaskModal";
+import AuthButton from "@/components/AuthButton";
 
 interface Task {
   _id: string;
@@ -188,6 +189,7 @@ export default function Home() {
                 Track how well you align with your Google Calendar schedule
               </p>
             </div>
+            <AuthButton />
           </div>
         </div>
 
