@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 export interface ITask extends mongoose.Document {
   title: string;
@@ -15,52 +15,59 @@ export interface ITask extends mongoose.Document {
   updatedAt: Date;
 }
 
-const TaskSchema = new mongoose.Schema({
-  title: {
-    type: String,
-    required: true,
-    trim: true,
+const TaskSchema = new mongoose.Schema(
+  {
+    title: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    description: {
+      type: String,
+      trim: true,
+    },
+    googleEventId: {
+      type: String,
+      default: null,
+    },
+    category: {
+      type: String,
+      required: true,
+      enum: ["work", "personal", "health", "learning", "other"],
+    },
+    scheduledStart: {
+      type: Date,
+      required: true,
+    },
+    scheduledEnd: {
+      type: Date,
+      required: true,
+    },
+    actualStart: {
+      type: Date,
+    },
+    actualEnd: {
+      type: Date,
+    },
+    isCompleted: {
+      type: Boolean,
+      default: false,
+    },
+    alignmentScore: {
+      type: Number,
+      default: 0,
+      min: 0,
+      max: 100,
+    },
+    points: {
+      type: Number,
+      default: 0,
+    },
   },
-  description: {
-    type: String,
-    trim: true,
-  },
-  category: {
-    type: String,
-    required: true,
-    enum: ['work', 'personal', 'health', 'learning', 'other'],
-  },
-  scheduledStart: {
-    type: Date,
-    required: true,
-  },
-  scheduledEnd: {
-    type: Date,
-    required: true,
-  },
-  actualStart: {
-    type: Date,
-  },
-  actualEnd: {
-    type: Date,
-  },
-  isCompleted: {
-    type: Boolean,
-    default: false,
-  },
-  alignmentScore: {
-    type: Number,
-    default: 0,
-    min: 0,
-    max: 100,
-  },
-  points: {
-    type: Number,
-    default: 0,
-  },
-}, {
-  timestamps: true,
-});
+  {
+    timestamps: true,
+  }
+);
 
 export interface IWeeklyStats extends mongoose.Document {
   weekStart: Date;
@@ -74,38 +81,41 @@ export interface IWeeklyStats extends mongoose.Document {
   updatedAt: Date;
 }
 
-const WeeklyStatsSchema = new mongoose.Schema({
-  weekStart: {
-    type: Date,
-    required: true,
+const WeeklyStatsSchema = new mongoose.Schema(
+  {
+    weekStart: {
+      type: Date,
+      required: true,
+    },
+    weekEnd: {
+      type: Date,
+      required: true,
+    },
+    totalTasks: {
+      type: Number,
+      default: 0,
+    },
+    completedTasks: {
+      type: Number,
+      default: 0,
+    },
+    totalPoints: {
+      type: Number,
+      default: 0,
+    },
+    averageAlignment: {
+      type: Number,
+      default: 0,
+    },
+    successRate: {
+      type: Number,
+      default: 0,
+    },
   },
-  weekEnd: {
-    type: Date,
-    required: true,
-  },
-  totalTasks: {
-    type: Number,
-    default: 0,
-  },
-  completedTasks: {
-    type: Number,
-    default: 0,
-  },
-  totalPoints: {
-    type: Number,
-    default: 0,
-  },
-  averageAlignment: {
-    type: Number,
-    default: 0,
-  },
-  successRate: {
-    type: Number,
-    default: 0,
-  },
-}, {
-  timestamps: true,
-});
+  {
+    timestamps: true,
+  }
+);
 
 export interface IMonthlyStats extends mongoose.Document {
   monthStart: Date;
@@ -119,39 +129,47 @@ export interface IMonthlyStats extends mongoose.Document {
   updatedAt: Date;
 }
 
-const MonthlyStatsSchema = new mongoose.Schema({
-  monthStart: {
-    type: Date,
-    required: true,
+const MonthlyStatsSchema = new mongoose.Schema(
+  {
+    monthStart: {
+      type: Date,
+      required: true,
+    },
+    monthEnd: {
+      type: Date,
+      required: true,
+    },
+    totalTasks: {
+      type: Number,
+      default: 0,
+    },
+    completedTasks: {
+      type: Number,
+      default: 0,
+    },
+    totalPoints: {
+      type: Number,
+      default: 0,
+    },
+    averageAlignment: {
+      type: Number,
+      default: 0,
+    },
+    successRate: {
+      type: Number,
+      default: 0,
+    },
   },
-  monthEnd: {
-    type: Date,
-    required: true,
-  },
-  totalTasks: {
-    type: Number,
-    default: 0,
-  },
-  completedTasks: {
-    type: Number,
-    default: 0,
-  },
-  totalPoints: {
-    type: Number,
-    default: 0,
-  },
-  averageAlignment: {
-    type: Number,
-    default: 0,
-  },
-  successRate: {
-    type: Number,
-    default: 0,
-  },
-}, {
-  timestamps: true,
-});
+  {
+    timestamps: true,
+  }
+);
 
-export const Task = mongoose.models.Task || mongoose.model<ITask>('Task', TaskSchema);
-export const WeeklyStats = mongoose.models.WeeklyStats || mongoose.model<IWeeklyStats>('WeeklyStats', WeeklyStatsSchema);
-export const MonthlyStats = mongoose.models.MonthlyStats || mongoose.model<IMonthlyStats>('MonthlyStats', MonthlyStatsSchema);
+export const Task =
+  mongoose.models.Task || mongoose.model<ITask>("Task", TaskSchema);
+export const WeeklyStats =
+  mongoose.models.WeeklyStats ||
+  mongoose.model<IWeeklyStats>("WeeklyStats", WeeklyStatsSchema);
+export const MonthlyStats =
+  mongoose.models.MonthlyStats ||
+  mongoose.model<IMonthlyStats>("MonthlyStats", MonthlyStatsSchema);
